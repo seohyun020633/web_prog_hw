@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "text": "시험 공부하기",
+    "completed": false
+  },
+  {
+    "id": 2,
+    "text": "운동하기",
+    "completed": true
+  },
+  {
+    "id": 3,
+    "text": "책 읽기",
+    "completed": false
+  },
+  {
+    "id": 4,
+    "text": "요리하기",
+    "completed": true
+  },
+  {
+    "id": 5,
+    "text": "영화 보기",
+    "completed": false
+  }
+]
