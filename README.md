@@ -1,4 +1,3 @@
-# web_prog_hw
 
  ## 1. 프로젝트 정보
 * **과제명:** To-Do List 업그레이드 (Version 3 → Version 4)
