@@ -1,23 +1,41 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>나의 할 일 목록 - 버전 3</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>나의 할 일 목록 (기본 index.html)</h1>
+      <h1>나의 할 일 목록 (기본 index.html)</h1>
 
-        <form id="addTodoForm"> <input type="text" id="newTodoText" placeholder="새로운 할 일을 입력하세요" required>
-            <button type="submit">추가</button>
-        </form>
+      <form id="addTodoForm">
+        <input
+          type="text"
+          id="newTodoText"
+          placeholder="새로운 할 일을 입력하세요"
+          required
+        />
+        <!-- 기한날짜추가 -->
+        <input type="date" id="dueDateInput" name="dueDate"/>  
+        <button type="submit">추가</button>
+      </form>
 
-        <ul id="todoList">
-            </ul>
+      <!-- 할일 정렬 -->
+      <label for="sortOrder">정렬:</label>
+      <select id="sortOrder">
+        <option value="desc">최신순</option>
+        <option value="asc">오래된 순</option>
+        <option value="alpha">알파벳 순</option>
+      </select>
+
+    <!-- 간단한 검색 기능 -->
+      <input type="text" id="searchInput" placeholder="할 일 검색..." />
+
+      <ul id="todoList"></ul>
     </div>
 
     <script src="script.js" defer></script>
-</body>
+  </body>
 </html>

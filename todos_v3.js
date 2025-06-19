@@ -52,8 +52,8 @@ app.get('/api/todos', async (req, res) => {
 // [2] POST /api/todos: 새로운 할 일 추가 (JSON 요청/응답)
 // ----------------------------------------------------
 app.post('/api/todos', async (req, res) => {
-    const { text } = req.body;
-    console.log(`POST /api/todos 요청 수신. 할 일: "${text}"`);
+    const { text,dueDate} = req.body;
+    console.log(`POST /api/todos 요청 수신. 할 일: "${text}", 기한: "${dueDate}"`);
 
     if (!text || text.trim() === '') {
         return res.status(400).json({ error: '할 일 내용이 비어있습니다.' });
@@ -72,7 +72,7 @@ app.post('/api/todos', async (req, res) => {
 
     const newId = maxId + 1; // 가장 큰 ID + 1
 
-    const newTodo = { id: newId, text: text.trim(), completed: false };
+    const newTodo = { id: newId, text: text.trim(), completed: false,dueDate: dueDate || null };
     todos.push(newTodo);
     await saveTodos(todos);
 
