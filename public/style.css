@@ -56,5 +56,28 @@ li span {
     margin-left: 10px;
 }
 
+.filterbar{
+display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:center;
+  margin:20px auto;
+  flex-wrap:wrap;
+}
+
+.filterbar select,
+.filterbar input[type="text"]{
+  padding:8px 12px;
+  font-size:14px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  outline:none;
+  transition:border-color 0.2s;
+}
+
+.filterbar select:focus,
+.filterbar input[type="text"]:focus{
+  border:2px solid #007bff;
+}
 
 

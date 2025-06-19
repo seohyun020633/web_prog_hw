@@ -18,22 +18,24 @@
           required
         />
         <!-- 기한날짜추가 -->
-        <input type="date" id="dueDateInput" name="dueDate"/>  
+        <input type="date" id="dueDateInput" name="dueDate" />
         <button type="submit">추가</button>
       </form>
 
-      <!-- 할일 정렬 -->
-      <label for="sortOrder">정렬:</label>
-      <select id="sortOrder">
-        <option value="desc">최신순</option>
-        <option value="asc">오래된 순</option>
-        <option value="alpha">알파벳 순</option>
-      </select>
-
-    <!-- 간단한 검색 기능 -->
+      <div class="filterbar">
+        <!-- 할일 정렬 -->
+        <label for="sortOrder">정렬:</label>
+        <select id="sortOrder">
+          <option value="desc">최신순</option>
+          <option value="asc">오래된 순</option>
+          <option value="alpha">알파벳 순</option>
+        </select>
+      <!-- 간단한 검색 기능 -->
       <input type="text" id="searchInput" placeholder="할 일 검색..." />
+    </div>
 
       <ul id="todoList"></ul>
+      <div id="errorMessage" style="color: red; text-align: center; margin: 10px 0;"></div>
     </div>
 
     <script src="script.js" defer></script>
