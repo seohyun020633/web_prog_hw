@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
   //기한 설정
   const dueDateInput = document.getElementById("dueDateInput");
 
+  //에러
+  const errorBox = document.getElementById("errorMessage");
+
   // --- 할 일 목록을 화면에 그리는 함수 ---
   async function renderTodos() {
     // 1. 비동기 작업을 위한 try-catch 블록
@@ -113,9 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } catch (error) {
       // 12. 전체 fetch 작업 실패 시 에러 처리
-      console.error("할 일 목록을 불러오는 데 실패했습니다:", error);
-      todoList.innerHTML =
-        '<p style="color: red; text-align: center;">할 일 목록을 불러올 수 없습니다. 서버를 확인해주세요.</p>';
+      errorBox.textContent = `목록 불러오기 실패: ${error.message}`
+    //   console.error("할 일 목록을 불러오는 데 실패했습니다:", error);
+    //   todoList.innerHTML =
+    //     '<p style="color: red; text-align: center;">할 일 목록을 불러올 수 없습니다. 서버를 확인해주세요.</p>';
     }
   }
 
@@ -155,8 +159,9 @@ document.addEventListener("DOMContentLoaded", () => {
       dueDateInput.value="";
       renderTodos(); // 할 일 목록 다시 그려서 업데이트된 내용 보여주기
     } catch (error) {
-      console.error("할 일 추가 실패:", error);
-      alert(`할 일 추가에 실패했습니다: ${error.message}`);
+        errorBox.textContent = `할 일 추가 실패: ${error.message}`
+    //   console.error("할 일 추가 실패:", error);
+    //   alert(`할 일 추가에 실패했습니다: ${error.message}`);
     }
   });
 
