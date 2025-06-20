@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>나의 할 일 목록 (기본 index.html)</h1>
+      <h1>나의 할 일 목록</h1>
 
       <form id="addTodoForm">
         <input
@@ -23,6 +23,13 @@
       </form>
 
       <div class="filterbar">
+      <div id="filterButtons">
+        <button id="filterAll" class="filter-btn selected">전체</button>
+        <button id="filterCompleted" class="filter-btn">완료됨</button>
+        <button id="filterIncomplete" class="filter-btn">미완료됨</button>
+      </div>
+
+      <div class="sort">
         <!-- 할일 정렬 -->
         <label for="sortOrder">정렬:</label>
         <select id="sortOrder">
@@ -30,12 +37,16 @@
           <option value="asc">오래된 순</option>
           <option value="alpha">알파벳 순</option>
         </select>
-      <!-- 간단한 검색 기능 -->
-      <input type="text" id="searchInput" placeholder="할 일 검색..." />
-    </div>
+      </div>
+        <!-- 간단한 검색 기능 -->
+        <input type="text" id="searchInput" placeholder="할 일 검색..." />
+      </div>
 
       <ul id="todoList"></ul>
-      <div id="errorMessage" style="color: red; text-align: center; margin: 10px 0;"></div>
+      <div
+        id="errorMessage"
+        style="color: red; text-align: center; margin: 10px 0"
+      ></div>
     </div>
 
     <script src="script.js" defer></script>
