@@ -56,7 +56,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. 비동기 작업을 위한 try-catch 블록
     try {
       // 2. 서버에서 할 일 목록 가져오기 (GET 요청)
-      const response = await fetch("/api/todos"); // 서버의 '/api/todos' 엔드포인트에 GET 요청을 보냅니다.
+
+      // //클라이언트
+      // const response = await fetch("/api/todos"); // 서버의 '/api/todos' 엔드포인트에 GET 요청을 보냅니다.
+
+      //서버
+      const params = new URLSearchParams({
+        completed:
+          currentFilter === "all"? "": currentFilter === "completed"? "true": "false",sort: sortOrderSelect.value,
+          search: searchInput.value.trim(),
+      });
+      const response = await fetch(`/api/todos?${params.toString()}`);
+
       // 'await' 키워드는 fetch 요청이 완료되고 응답을 받을 때까지 기다리라는 의미입니다.
 
       // 3. HTTP 응답 상태 확인
@@ -70,13 +81,13 @@ document.addEventListener("DOMContentLoaded", () => {
       let todos = await response.json(); // 서버에서 받은 응답(response)을 JSON 형식으로 파싱합니다.
       // 이 또한 비동기 작업이므로 'await'이 필요합니다.
 
-      //상태 변경 버튼 적용
-      if (currentFilter === "completed") {
-        todos = todos.filter((todo) => todo.completed === true);
-      } else if (currentFilter === "incomplete") {
-        todos = todos.filter((todo) => todo.completed === false);
-      }
-      console.log("필터 적용 후 todos:", todos);
+      // //상태 변경 버튼 적용
+      // if (currentFilter === "completed") {
+      //   todos = todos.filter((todo) => todo.completed === true);
+      // } else if (currentFilter === "incomplete") {
+      //   todos = todos.filter((todo) => todo.completed === false);
+      // }
+      // console.log("필터 적용 후 todos:", todos);
 
       // 6. 기존 할 일 목록 UI 초기화
       todoList.innerHTML = ""; // HTML의 id="todoList"인 <ul> 요소의 내용을 모두 지웁니다.
@@ -90,23 +101,29 @@ document.addEventListener("DOMContentLoaded", () => {
         return; // 함수 실행을 여기서 종료합니다.
       }
 
-      //검색어
-      const searchkeyword = searchInput.value.trim().toLowerCase();
-      if (searchkeyword !== "") {
-        todos = todos.filter((todo) =>
-          todo.text.toLowerCase().includes(searchkeyword)
-        );
-      }
+      // //검색어
+      // const searchkeyword = searchInput.value.trim().toLowerCase();
+      // if (searchkeyword !== "") {
+      //   todos = todos.filter((todo) =>
+      //     todo.text.toLowerCase().includes(searchkeyword)
+      //   );
+      // }
 
-      //정렬
-      const sortOrder = sortOrderSelect.value;
-      if (sortOrder === "asc") {
-        todos.sort((a, b) => a.id - b.id); //오래된
-      } else if (sortOrder === "desc") {
-        todos.sort((a, b) => b.id - a.id); //최신
-      } else if (sortOrder === "alpha") {
-        todos.sort((a, b) => a.text.localeCompare(b.text)); //알파벳
-      }
+      // //정렬
+      // const sortOrder = sortOrderSelect.value;
+      // if (sortOrder === "asc") {
+      //   todos.sort((a, b) => a.id - b.id); //오래된
+      // } else if (sortOrder === "desc") {
+      //   todos.sort((a, b) => b.id - a.id); //최신
+      // } else if (sortOrder === "alpha") {
+      //   todos.sort((a, b) => a.text.localeCompare(b.text)); //알파벳
+      // }else if (sortOrder === "due") {
+      //   todos.sort((a, b) => {
+      //     if (!a.dueDate) return 1;
+      //     if (!b.dueDate) return -1;
+      //     return new Date(a.dueDate) - new Date(b.dueDate); //기한빠름
+      //   });
+      // }
 
       // 8. 할 일 목록을 순회하며 각 항목 렌더링
       todos.forEach((todo) => {
@@ -232,6 +249,13 @@ document.addEventListener("DOMContentLoaded", () => {
           input.style.padding = "5px";
           input.style.marginRight = "8px";
 
+          //기한수정
+          const dateInput = document.createElement("input");
+          dateInput.type = "date";
+          dateInput.value = todo.dueDate ? todo.dueDate.split("T")[0] : ""; //날짜추출
+          dateInput.style.padding = "5px";
+          dateInput.style.marginRight = "8px";
+
           const saveButton = document.createElement("button");
           saveButton.textContent = "저장";
           saveButton.style.backgroundColor = "#00bd42";
@@ -241,10 +265,12 @@ document.addEventListener("DOMContentLoaded", () => {
           saveButton.style.borderRadius = "4px";
           li.innerHTML = "";
           li.appendChild(input);
+          li.appendChild(dateInput);//기한수정추가
           li.appendChild(saveButton);
 
           saveButton.addEventListener("click", async () => {
             const newText = input.value.trim();
+            const newDueDate = dateInput.value;//기한수정추가
             if (!newText) {
               alert("내용을 입력하세요!");
               return;
@@ -256,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ text: newText }),
+                body: JSON.stringify({ text: newText, dueDate: newDueDate  }),//기한수정추가
               });
 
               if (!res.ok) {
@@ -264,9 +290,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(errorData.error || "수정 실패");
               }
 
-              console.log(`수정 완료: ${newText}`);
+              console.log(`수정 완료: ${newText}, 기한: ${newDueDate}`);//기한수정추가
               renderTodos(); // 다시 렌더링
             } catch (error) {
+              errorBox.textContent = `수정 중 오류: ${error.message}`;
               console.error("수정 중 오류:", error);
               alert("수정 중 오류가 발생했습니다.");
             }

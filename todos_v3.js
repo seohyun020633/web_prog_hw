@@ -48,14 +48,47 @@ async function saveTodos(todosToSave) {
 // ----------------------------------------------------
 app.get("/api/todos", async (req, res) => {
   console.log("GET /api/todos 요청 수신");
-  const todos = await loadTodos();
+  const { completed, sort, search } = req.query;
+  let todos = await loadTodos();
+
+  console.log("요청 쿼리:", req.query);
+  //검색 필터링
+  if (search) {
+    todos = todos.filter(todo =>
+      todo.text.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+
+  //완료상태
+  if (completed === "true") {
+    todos = todos.filter(todo => todo.completed === true);
+  } else if (completed === "false") {
+    todos = todos.filter(todo => todo.completed === false);
+  }
+
+  //정렬
+  if (sort === "asc") {
+    todos.sort((a,b) => a.id-b.id); //오래된
+  } else if (sort === "desc") {
+    todos.sort((a,b) => b.id-a.id); //최신
+  } else if (sort === "alpha") {
+    todos.sort((a,b) => a.text.localeCompare(b.text)); //알파벳
+  }else if (sort === "due") {
+    todos.sort((a,b) => {
+      if (!a.dueDate) return 1;
+      if (!b.dueDate) return -1;
+      return new Date(a.dueDate)-new Date(b.dueDate); //기한 빠름
+    });
+  }
+
   res.json(todos); // 할 일 목록을 JSON 형태로 응답
 });
 
 // ----------------------------------------------------
 // [2] POST /api/todos: 새로운 할 일 추가 (JSON 요청/응답)
 // ----------------------------------------------------
-app.post("/api/todos", async (req, res) => {
+const validateTodoInput = require('./middlewares/validateTodoInput');
+app.post("/api/todos",validateTodoInput, async (req, res) => {
   const { text, dueDate } = req.body;
   console.log(
     `POST /api/todos 요청 수신. 할 일: "${text}", 기한: "${dueDate}"`
@@ -112,7 +145,7 @@ app.delete("/api/todos/:id", async (req, res) => {
 
 // 미완료 및 완료 상태
 // 텍스트 수정 통합 핸들러
-app.patch("/api/todos/:id", async (req, res) => {
+app.patch("/api/todos/:id", validateTodoInput,async (req, res) => {
   const id = parseInt(req.params.id);
   const { text, completed } = req.body;
 
@@ -129,12 +162,17 @@ app.patch("/api/todos/:id", async (req, res) => {
       .json({ error: "해당 ID의 할 일을 찾을 수 없습니다." });
   }
 
-  if (typeof text === "string" && text.trim() !== "") {
+  if (typeof text !==undefined) {
     todo.text = text.trim();
   }
 
-  if (typeof completed === "boolean") {
+  if (typeof completed !==undefined) {
     todo.completed = completed;
+  }
+
+  //기한수정추가
+  if (typeof dueDate !==undefined) {
+    todo.dueDate = dueDate || null;
   }
 
   await saveTodos(todos);
