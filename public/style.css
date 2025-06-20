@@ -31,26 +31,13 @@ h1 {
 }
 #addTodoForm button {
   padding: 10px 15px;
-  background-color: #007bff;
+  background-color: #00bd42;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
-.filter-btn {
-  border: none;
-  padding: 5px 9px;
-  background-color: #e0dfdf;
-  border-radius: 5px;
-  color: black;
-}
-.filter-btn.selected {
-  border: none;
-  padding: 5px 9px;
-  background-color: #007bff;
-  border-radius: 5px;
-  color: white;
-}
+
 ul {
   list-style: none;
   padding: 0;
@@ -72,17 +59,45 @@ li span {
 
 .filterbar {
   display: flex;
-  gap: 12px;
+  gap: 5px;
   align-items: center;
-  justify-content: center;
-  margin: 20px auto;
+  margin: 5px auto;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
+
+.filterButtons{
+  display: flex;
+  gap: 6px;
+}
+
+.filter-btn {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  background-color: white;
+  color: black;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+.filter-btn.selected {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+  border-radius: 6px;
+}
+
+/* #007bff */
+
 
 .filterbar select,
 .filterbar input[type="text"] {
-  padding: 8px 12px;
-  font-size: 14px;
+  padding: 8px 10px;
+  font-size: 13px;
   border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;
@@ -92,4 +107,17 @@ li span {
 .filterbar select:focus,
 .filterbar input[type="text"]:focus {
   border: 2px solid #007bff;
+}
+
+#sortOrder{
+  font-size: 13px;
+  padding: 3px 6px;
+  height: 32px;
+  border-radius: 4px; 
+}
+
+.sort{
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }

@@ -114,6 +114,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 9. <li> 요소 생성
         const li = document.createElement("li"); // 새로운 <li> HTML 요소를 만듭니다.
+        li.style.display = "flex";
+        li.style.justifyContent = "space-between";
+        li.style.alignItems = "center";
+        li.style.padding = "10px";
+        li.style.borderBottom = "1px solid #eee";
         li.dataset.id = todo.id; // 'data-id'라는 사용자 정의 데이터 속성에 할 일의 ID를 저장합니다.
         // 나중에 이 할 일을 삭제하거나 수정할 때 ID를 쉽게 찾아 서버에 전달하기 위함입니다.
 
@@ -126,7 +131,12 @@ document.addEventListener("DOMContentLoaded", () => {
           return due < today.setHours(0, 0, 0, 0); //날짜만 비교
         }
 
-        // ✅ 체크박스
+        const leftBox = document.createElement("div");
+        leftBox.style.display = "flex";
+        leftBox.style.alignItems = "center";
+        leftBox.style.gap = "8px";
+
+        //체크박스
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.checked = todo.completed;
@@ -146,19 +156,19 @@ document.addEventListener("DOMContentLoaded", () => {
               throw new Error("서버 업데이트 실패");
             }
 
-            // ✅ UI 반영 (텍스트 스타일 변경)
+            //텍스트 스타일 변경
             if (newCompleted) {
               textSpan.style.textDecoration = "line-through";
               textSpan.style.color = "#999";
               checkbox.style.accentColor = "#999";
-              li.style.backgroundColor = "#d1f4f2";
+              li.style.backgroundColor = "#d9ffe3"; //d1f4f2
             } else {
               textSpan.style.textDecoration = "none";
               textSpan.style.color = "#000";
               li.style.backgroundColor = "#f9f9f9";
             }
 
-            console.log(`✔️ 완료 상태 업데이트됨 (ID: ${todo.id})`);
+            console.log(`완료 상태 업데이트됨 (ID: ${todo.id})`);
           } catch (err) {
             console.error("완료 상태 업데이트 실패:", err);
             alert("완료 상태 변경에 실패했습니다.");
@@ -166,15 +176,18 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
-        // ✅ 텍스트 (span)
+        //텍스트:span
         const textSpan = document.createElement("span");
         textSpan.textContent = todo.text;
         if (todo.completed) {
           textSpan.style.textDecoration = "line-through";
           textSpan.style.color = "#999";
           checkbox.style.accentColor = "#999";
-          li.style.backgroundColor = "#d1f4f2";
+          li.style.backgroundColor = "#d9ffe3";
         }
+
+        leftBox.appendChild(checkbox);
+        leftBox.appendChild(textSpan);
 
         //날짜 포멧
         function formatDate(dateStr) {
@@ -191,16 +204,23 @@ document.addEventListener("DOMContentLoaded", () => {
         const dateColor = isOver ? "crimson" : "#666";
         const label = isOver ? "기한 지남: " : "기한: ";
 
-        li.style.justifyContent = "space-between";
-        li.style.alignItems = "center";
+        const rightBox = document.createElement("div");
+        rightBox.style.display = "flex";
+        rightBox.style.alignItems = "center";
+        rightBox.style.gap = "8px";
 
-        // ✅ 수정 버튼
+        //기한부분
+        const dueSpan = document.createElement("span");
+        dueSpan.textContent = `(${label}${formatDate(todo.dueDate)})`;
+        dueSpan.style.color = dateColor;
+        dueSpan.style.fontSize = "13px";
+
+        //수정 버튼
         const editButton = document.createElement("button");
         editButton.textContent = "수정";
-        editButton.style.marginLeft = "8px";
-        editButton.style.backgroundColor = "black";
+        editButton.style.backgroundColor = "#007bff";
         editButton.style.border = "none";
-        editButton.style.padding = "3px 7px";
+        editButton.style.padding = "8px 13px";
         editButton.style.borderRadius = "4px";
         editButton.style.color = "white";
         editButton.addEventListener("click", () => {
@@ -214,10 +234,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const saveButton = document.createElement("button");
           saveButton.textContent = "저장";
-          saveButton.style.backgroundColor = "green";
+          saveButton.style.backgroundColor = "#00bd42";
           saveButton.style.color = "white";
           saveButton.style.border = "none";
-          saveButton.style.padding = "3px 7px";
+          saveButton.style.padding = "8px 13px";
           saveButton.style.borderRadius = "4px";
           li.innerHTML = "";
           li.appendChild(input);
@@ -244,7 +264,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(errorData.error || "수정 실패");
               }
 
-              console.log(`✅ 수정 완료: ${newText}`);
+              console.log(`수정 완료: ${newText}`);
               renderTodos(); // 다시 렌더링
             } catch (error) {
               console.error("수정 중 오류:", error);
@@ -253,13 +273,12 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         });
 
-        // ✅ 삭제 버튼
+        //삭제 버튼
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "삭제";
-        deleteButton.style.marginLeft = "8px";
         deleteButton.style.backgroundColor = "red";
         deleteButton.style.border = "none";
-        deleteButton.style.padding = "3px 7px";
+        deleteButton.style.padding = "8px 13px";
         deleteButton.style.borderRadius = "4px";
         deleteButton.style.color = "white";
         deleteButton.addEventListener("click", async () => {
@@ -269,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             if (res.ok) {
               li.remove();
-              console.log(`🗑️ ID ${todo.id} 삭제 성공`);
+              console.log(`ID ${todo.id} 삭제 성공`);
             } else {
               alert("삭제 실패");
             }
@@ -278,26 +297,20 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
-        li.appendChild(checkbox);
-        li.appendChild(textSpan);
-        li.appendChild(editButton);
-        li.appendChild(deleteButton);
+        rightBox.appendChild(dueSpan);
+        rightBox.appendChild(editButton);
+        rightBox.appendChild(deleteButton);
+
+        li.appendChild(leftBox);
+        li.appendChild(rightBox);
 
         // // 10. <li> 내부 HTML 설정 (템플릿 리터럴 사용) - 할 일 텍스트를 표시합니다.
-        // li.innerHTML = `<span>${todo.text}</span>
-        // <span style="color: ${dateColor}; font-size: 0.85em;">
-        // (${label}${formatDate(todo.dueDate)})
-        // </span>`;
-
         // 11. 생성된 <li> 요소를 <ul>에 추가
         todoList.appendChild(li); // 모든 설정이 완료된 <li> 요소를 id="todoList"인 <ul> 요소의 자식으로 추가합니다.
       });
     } catch (error) {
       // 12. 전체 fetch 작업 실패 시 에러 처리
       errorBox.textContent = `목록 불러오기 실패: ${error.message}`;
-      //   console.error("할 일 목록을 불러오는 데 실패했습니다:", error);
-      //   todoList.innerHTML =
-      //     '<p style="color: red; text-align: center;">할 일 목록을 불러올 수 없습니다. 서버를 확인해주세요.</p>';
     }
   }
 
