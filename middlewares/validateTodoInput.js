@@ -4,7 +4,8 @@ module.exports = function validateTodoInput(req, res, next) {
     if (text !== undefined && (typeof text !== "string" || text.trim() === "")) {
       return res.status(400).json({ error: "빈 문자열이 될 수 없습니다." });
     }
-    if (dueDate !== undefined && isNaN(Date.parse(dueDate))) {
+    //빈문자열 기한없음 추가
+    if (dueDate !== undefined && dueDate !== "" &&isNaN(Date.parse(dueDate))) {
       return res.status(400).json({ error: "유효하지 않은 날짜 형식입니다." });
     }
     if (completed !== undefined && typeof completed !== "boolean") {
