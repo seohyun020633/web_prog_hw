@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const isOver = isOverdue(todo.dueDate); //기한 판단
-        const dateColor = isOver ? "crimson" : "#666";
+        // const dateColor = isOver ? "crimson" : "#666";
         const label = isOver ? "기한 지남: " : "기한: ";
 
         const rightBox = document.createElement("div");
@@ -229,8 +229,12 @@ document.addEventListener("DOMContentLoaded", () => {
         //기한부분
         const dueSpan = document.createElement("span");
         dueSpan.textContent = `(${label}${formatDate(todo.dueDate)})`;
-        dueSpan.style.color = dateColor;
-        dueSpan.style.fontSize = "13px";
+        // dueSpan.style.color = dateColor;
+        // dueSpan.style.fontSize = "13px";
+        dueSpan.classList.add("due-span");
+        if (isOver) {
+          dueSpan.classList.add("overdue");
+        }
 
         //수정 버튼
         const editButton = document.createElement("button");

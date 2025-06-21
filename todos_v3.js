@@ -38,8 +38,10 @@ async function saveTodos(todosToSave) {
       "utf8"
     );
     console.log("[Todo] 할 일 목록이 성공적으로 저장되었습니다.");
+    console.log(`\n`)
   } catch (error) {
     console.error("[Todo] 할 일 목록을 저장하는 중 오류 발생:", error);
+    console.log(`\n`)
   }
 }
 
@@ -52,6 +54,7 @@ app.get("/api/todos", async (req, res) => {
   let todos = await loadTodos();
 
   console.log("요청 쿼리:", req.query);
+  console.log(`\n`)
   //검색 필터링
   if (search) {
     todos = todos.filter(todo =>
@@ -126,6 +129,7 @@ app.post("/api/todos",validateTodoInput, async (req, res) => {
 // 할일 삭제
 app.delete("/api/todos/:id", async (req, res) => {
   const idToDelete = parseInt(req.params.id);
+  console.log(`DELETE-삭제할 ID: ${idToDelete}`);
   if (isNaN(idToDelete)) {
     return res.status(400).json({ error: "잘못된 ID입니다." });
   }
@@ -139,15 +143,18 @@ app.delete("/api/todos/:id", async (req, res) => {
       .json({ error: "해당 ID의 할 일을 찾을 수 없습니다." });
   }
 
+  console.log(`\n`)
   await saveTodos(filteredTodos);
-  res.status(204).end(); // 성공: 내용 없음
+  res.status(204).end();
 });
 
 // 미완료 및 완료 상태
 // 텍스트 수정 통합 핸들러
 app.patch("/api/todos/:id", validateTodoInput,async (req, res) => {
   const id = parseInt(req.params.id);
-  const { text, completed } = req.body;
+  const { text, completed, dueDate } = req.body;
+  console.log(`PATCH-수정 ID: ${id}`);
+  console.log("요청 바디:", req.body);
 
   if (isNaN(id)) {
     return res.status(400).json({ error: "잘못된 ID입니다." });
@@ -162,19 +169,23 @@ app.patch("/api/todos/:id", validateTodoInput,async (req, res) => {
       .json({ error: "해당 ID의 할 일을 찾을 수 없습니다." });
   }
 
-  if (typeof text !==undefined) {
+  if (typeof text !=="undefined") {
     todo.text = text.trim();
+    console.log(`텍스트 수정: ${todo.text}`);
   }
 
-  if (typeof completed !==undefined) {
+  if (typeof completed !=="undefined") {
     todo.completed = completed;
+    console.log(`완료 상태 수정: ${todo.completed}`);
   }
 
   //기한수정추가
-  if (typeof dueDate !==undefined) {
+  if (typeof dueDate !=="undefined") {
     todo.dueDate = dueDate || null;
+    console.log(`기한 수정: ${todo.dueDate}`);
   }
 
+  console.log(`\n`)
   await saveTodos(todos);
   res.json(todo);
 });

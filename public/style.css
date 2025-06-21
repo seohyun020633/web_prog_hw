@@ -121,3 +121,13 @@ li span {
   align-items: center;
   gap: 4px;
 }
+
+.due-span {
+  font-size: 14px;
+  color: #666;
+}
+
+.overdue {
+  color: crimson;
+  font-size: 14px;
+}
