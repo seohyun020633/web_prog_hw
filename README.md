@@ -27,7 +27,7 @@
 
   - **할 일 수정 (PUT):**
 
-    <img src="./image/alter.png"/>
+    <img src="./image/altername.png"/>
 
   - **할 일 완료 상태 토글 (PATCH):**
 
@@ -45,7 +45,9 @@
   <img src="./image/search.png"/>
 - **기한 설정 및 시각화:**
   - 할 일 추가/수정 시 기한 설정
+    <img src="./image/alterday.png"/>
   - 기한 초과 할 일 시각적 강조
+    <img src="./image/overtime.png"/>
 - **유효성 검사:** (클라이언트/서버)
 - **에러 처리 UI:** (서버 통신 실패 시 메시지 표시)
 
