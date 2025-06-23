@@ -1,0 +1,23 @@
+{
+  "name": "web_prog_hw",
+  "version": "1.0.0",
+  "description": "* **과제명:** To-Do List 업그레이드 (Version 3 → Version 4) * **제출자:** 안서현, 김민경 * **제출일:** 2025년 06월 23일",
+  "main": "todos_v3.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seohyun020633/web_prog_hw.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seohyun020633/web_prog_hw/issues"
+  },
+  "homepage": "https://github.com/seohyun020633/web_prog_hw#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}

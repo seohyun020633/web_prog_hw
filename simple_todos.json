@@ -21,9 +21,8 @@
   },
   {
     "id": 5,
-    "text": "영화 보기",
-    "completed": false
-
-  
+    "text": "만화 보기",
+    "completed": false,
+    "dueDate": "2025-06-03"
   }
 ]
